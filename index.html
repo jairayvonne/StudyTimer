@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#7c3aed" />
+  <title>Time Lock: Study Timer</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="apple-touch-icon" href="logo.png" />
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Mobile App Container -->
+  <div class="app-container">
+
+    <!-- 1. SPLASH SCREEN -->
+    <div id="splash-screen" class="screen active">
+      <div class="splash-center">
+        <img src="logo.png" alt="Time Lock Logo" class="splash-logo" />
+        <h1 class="splash-title">Time Lock</h1>
+        <p class="splash-subtitle">Study Timer</p>
+      </div>
+      <div class="splash-loader-box">
+        <div class="splash-spinner"></div>
+        <span class="splash-loading-text">Loading...</span>
+      </div>
+    </div>
+
+    <!-- 2. AUTH SCREEN (LOGIN / CREATE ACCOUNT / FORGOT PASSWORD) -->
+    <div id="login-screen" class="screen">
+      <div class="login-header">
+        <img src="logo.png" alt="Time Lock Logo" class="login-logo" />
+        <h2>Welcome to Time Lock: Study Timer</h2>
+        <p id="auth-subtitle">Log in to start.</p>
+      </div>
+
+      <div id="auth-feedback" class="auth-feedback"></div>
+
+      <!-- A. LOGIN FORM -->
+      <form id="login-form" class="auth-form active">
+        <div class="input-group">
+          <label>Email or Username</label>
+          <input type="text" id="login-identifier" placeholder="Enter your email or username" required />
+        </div>
+        <div class="input-group">
+          <label>Password</label>
+          <input type="password" id="login-password" placeholder="Enter your password" required />
+        </div>
+
+        <div class="auth-row-right">
+          <button type="button" id="show-forgot-btn" class="link-btn">Forgot Password?</button>
+        </div>
+
+        <button type="submit" class="btn-primary">Log In</button>
+
+        <div class="auth-switch">
+          <span>Don't have an account yet?</span>
+          <button type="button" id="show-signup-btn" class="link-btn bold">Create Account</button>
+        </div>
+      </form>
+
+      <!-- B. CREATE ACCOUNT FORM -->
+      <form id="signup-form" class="auth-form">
+        <div class="input-group">
+          <label>Full Name</label>
+          <input type="text" id="signup-fullname" placeholder="e.g. Juan Dela Cruz" required />
+        </div>
+        <div class="input-group">
+          <label>Username</label>
+          <input type="text" id="signup-username" placeholder="e.g. juandc" required />
+        </div>
+        <div class="input-group">
+          <label>Email</label>
+          <input type="email" id="signup-email" placeholder="student@school.edu" required />
+        </div>
+        <div class="input-group">
+          <label>Create Password</label>
+          <input type="password" id="signup-password" placeholder="At least 4 characters" minlength="4" required />
+        </div>
+        <div class="input-group">
+          <label>Confirm Password</label>
+          <input type="password" id="signup-confirm-password" placeholder="Re-enter password" minlength="4" required />
+        </div>
+
+        <button type="submit" class="btn-primary">Create Account</button>
+
+        <div class="auth-switch">
+          <span>Already have an account?</span>
+          <button type="button" id="back-to-login-from-signup" class="link-btn bold">Log In</button>
+        </div>
+      </form>
+
+      <!-- C. FORGOT PASSWORD FORM -->
+      <form id="forgot-form" class="auth-form">
+        <div class="input-group">
+          <label>Email or Username</label>
+          <input type="text" id="forgot-identifier" placeholder="Enter your registered email or username" required />
+        </div>
+        <div class="input-group">
+          <label>New Password</label>
+          <input type="password" id="reset-new-password" placeholder="Enter new password" minlength="4" required />
+        </div>
+        <div class="input-group">
+          <label>Confirm New Password</label>
+          <input type="password" id="reset-confirm-password" placeholder="Confirm new password" minlength="4" required />
+        </div>
+
+        <button type="submit" class="btn-primary">Reset Password</button>
+
+        <div class="auth-switch">
+          <button type="button" id="back-to-login-from-forgot" class="link-btn bold">← Back to Log In</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- 3. MAIN APP AREA (TABS) -->
+    <div id="main-app" class="screen">
+
+      <!-- HOME TAB -->
+      <div id="tab-home" class="tab-content active">
+        <header class="top-bar home-header">
+          <h3 id="display-greeting">Hello <span id="display-username">Student</span></h3>
+          <p class="welcome-banner">Welcome to Time Lock: Study timer</p>
+        </header>
+
+        <div class="timer-card">
+          <div class="field-block">
+            <label for="subject-input">What are you studying?</label>
+            <input type="text" id="subject-input" placeholder="e.g., Math, Science, Programming" />
+          </div>
+
+          <div class="custom-time-row">
+            <div class="field-block half">
+              <label for="custom-study-mins">Study Minutes</label>
+              <input type="number" id="custom-study-mins" min="1" max="300" value="25" />
+            </div>
+            <div class="field-block half">
+              <label for="custom-break-mins">Break Mins (5–15)</label>
+              <input type="number" id="custom-break-mins" min="5" max="15" value="5" />
+            </div>
+          </div>
+
+          <div id="timer-notice" class="timer-notice"></div>
+
+          <div id="alarm-alert-box" class="alarm-alert-box">
+            <span id="alarm-alert-text">🔔 Alarm ringing!</span>
+            <button type="button" id="stop-alarm-btn" class="btn-stop-alarm">Stop Alarm</button>
+          </div>
+
+          <div class="timer-circle" id="timer-circle">
+            <span id="timer-mode-badge" class="timer-mode-badge">STUDY</span>
+            <span id="timer-display">25:00</span>
+            <small id="timer-subinfo">5m break every 25m • 25m total left</small>
+          </div>
+
+          <div class="timer-controls">
+            <button type="button" id="start-btn" class="btn-primary">Start</button>
+            <button type="button" id="pause-btn" class="btn-secondary" disabled>Pause</button>
+            <button type="button" id="reset-btn" class="btn-danger">Reset</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCHEDULE TAB -->
+      <div id="tab-schedule" class="tab-content">
+        <header class="top-bar">
+          <h3>Study Schedule</h3>
+        </header>
+        <form id="schedule-form" class="card-form">
+          <input type="text" id="sched-subject" placeholder="Subject / Topic" required />
+          <div class="row">
+            <input type="date" id="sched-date" required />
+            <input type="time" id="sched-time" required />
+          </div>
+          <button type="submit" class="btn-primary">Add to Schedule</button>
+        </form>
+        <div id="schedule-list" class="list-container"></div>
+      </div>
+
+      <!-- HISTORY TAB -->
+      <div id="tab-history" class="tab-content">
+        <header class="top-bar">
+          <h3>Study History</h3>
+          <button type="button" id="clear-history-btn" class="text-btn">Clear</button>
+        </header>
+        <div id="history-list" class="list-container"></div>
+      </div>
+
+      <!-- SETTINGS TAB -->
+      <div id="tab-settings" class="tab-content">
+        <header class="top-bar">
+          <h3>Settings</h3>
+        </header>
+        <div class="settings-card">
+          <div class="setting-item">
+            <span>Full Name</span>
+            <strong id="settings-fullname">-</strong>
+          </div>
+          <div class="setting-item">
+            <span>Username</span>
+            <strong id="settings-username">-</strong>
+          </div>
+          <div class="setting-item">
+            <span>Email</span>
+            <strong id="settings-email">-</strong>
+          </div>
+          <div class="setting-item">
+            <span>Test Alarm Sound</span>
+            <button type="button" id="test-sound-btn" class="btn-small">Play</button>
+          </div>
+        </div>
+        <button type="button" id="logout-btn" class="btn-danger full-width">Log Out</button>
+      </div>
+
+      <!-- IN-APP NOTIFICATION PERMISSION MODAL -->
+      <div id="notif-modal" class="notif-modal-overlay">
+        <div class="notif-modal-card">
+          <div class="notif-modal-icon">🔔</div>
+          <h4>Enable Study Notifications?</h4>
+          <p>Get notified when your study or break timer finishes.</p>
+          <div id="notif-modal-status" class="notif-modal-status"></div>
+          <div class="notif-modal-actions">
+            <button type="button" id="modal-enable-notif-btn" class="btn-primary">Enable Notifications</button>
+            <button type="button" id="modal-later-notif-btn" class="btn-secondary">Maybe Later</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOTTOM NAVIGATION BAR -->
+      <nav class="bottom-nav">
+        <button type="button" class="nav-btn active" data-target="tab-home">
+          <span>⏱️</span><small>Home</small>
+        </button>
+        <button type="button" class="nav-btn" data-target="tab-schedule">
+          <span>📅</span><small>Schedule</small>
+        </button>
+        <button type="button" class="nav-btn" data-target="tab-history">
+          <span>📜</span><small>History</small>
+        </button>
+        <button type="button" class="nav-btn" data-target="tab-settings">
+          <span>⚙️</span><small>Settings</small>
+        </button>
+      </nav>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .catch((err) => console.log('Service worker registration failed:', err));
+      });
+    }
+  </script>
+</body>
+</html>
