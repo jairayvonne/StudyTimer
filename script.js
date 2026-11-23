@@ -1,10 +1,8 @@
-// --- STATE & STORAGE ---
 let accounts = JSON.parse(localStorage.getItem('tl_accounts')) || [];
 let user = JSON.parse(localStorage.getItem('tl_user')) || null;
 let schedules = JSON.parse(localStorage.getItem('tl_schedules')) || [];
 let historyLogs = JSON.parse(localStorage.getItem('tl_history')) || [];
 
-// Timer State: Study + Break every 25 minutes (Break: 5-15 mins, default 5m)
 const STUDY_BLOCK_MINUTES = 25;
 let totalStudyMinutes = 25;
 let breakMinutes = 5;
@@ -17,12 +15,10 @@ let isRunning = false;
 let isPaused = false;
 let dismissedNotifThisSession = false;
 
-// Continuous Alarm State
 let alarmLoopInterval = null;
 let isAlarmRinging = false;
 let pendingAlarmAction = null;
 
-// --- DOM ELEMENTS ---
 const splashScreen = document.getElementById('splash-screen');
 const loginScreen = document.getElementById('login-screen');
 const mainApp = document.getElementById('main-app');
@@ -54,7 +50,6 @@ const startBtn = document.getElementById('start-btn');
 const pauseBtn = document.getElementById('pause-btn');
 const resetBtn = document.getElementById('reset-btn');
 
-// 1. SPLASH SCREEN LOADING LOGIC
 window.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => {
     if (splashScreen) {
@@ -70,7 +65,6 @@ window.addEventListener('DOMContentLoaded', () => {
   }, 2200);
 });
 
-// 2. AUTH MODE SWITCHER
 function showFeedback(message, type = 'error') {
   if (!authFeedback) return;
   authFeedback.textContent = message;
@@ -106,7 +100,6 @@ document.getElementById('show-forgot-btn')?.addEventListener('click', () => swit
 document.getElementById('back-to-login-from-signup')?.addEventListener('click', () => switchAuthMode('login'));
 document.getElementById('back-to-login-from-forgot')?.addEventListener('click', () => switchAuthMode('login'));
 
-// 3. NOTIFICATION MODAL & ENTRY INTO MAIN APP
 function showNotifModalStatus(msg) {
   if (!notifModalStatus) return;
   notifModalStatus.textContent = msg;
@@ -204,7 +197,6 @@ if (loginForm) {
   });
 }
 
-// 5. CREATE ACCOUNT SUBMIT
 if (signupForm) {
   signupForm.addEventListener('submit', (e) => {
     e.preventDefault();
